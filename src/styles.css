@@ -1,0 +1,261 @@
+body { font-family: 'Inter', sans-serif; }
+.fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.slide-in { animation: slideIn 0.3s ease-out; }
+@keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+.ocr-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  animation: scan 2s linear infinite;
+  opacity: 0.7;
+}
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+.glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); }
+.high-contrast { filter: contrast(1.2); }
+.high-contrast .bg-white, .high-contrast .glass { background: #fff !important; border: 2px solid #000 !important; }
+.high-contrast .text-gray-600, .high-contrast .text-gray-500 { color: #000 !important; }
+.high-contrast .bg-gray-50 { background: #f3f4f6 !important; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+.focus-ring:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+
+/* Dark Mode Overrides */
+html.dark, html.dark body {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Base Utility Overrides */
+.dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-slate-50 {
+  background-color: #0f172a !important;
+}
+
+.dark .bg-slate-100 {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-slate-50\/30 {
+  background-color: rgba(15, 23, 42, 0.3) !important;
+}
+
+.dark .bg-blue-50\/50, .dark .bg-blue-50\/30 {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
+.dark .bg-institucional-50 {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark .bg-institucional-100 {
+  background-color: #1e3a8a !important;
+}
+
+/* Border and dividers */
+.dark .border-slate-200, 
+.dark .border-slate-100, 
+.dark .border-slate-300, 
+.dark .divide-slate-100 > * + * {
+  border-color: #334155 !important;
+}
+
+.dark .divide-y > * + * {
+  border-color: #334155 !important;
+}
+
+/* Interactive elements and hover states */
+.dark .hover\:bg-slate-50:hover, 
+.dark .hover\:bg-slate-100:hover, 
+.dark .hover\:bg-slate-200:hover,
+.dark .hover\:bg-slate-50\/30:hover {
+  background-color: #334155 !important;
+}
+
+.dark .hover\:bg-slate-50:hover * {
+  color: #f8fafc !important;
+}
+
+.dark .hover\:bg-slate-50:hover .text-slate-400 {
+  color: #cbd5e1 !important;
+}
+
+/* Form inputs & controls */
+.dark input, 
+.dark select, 
+.dark textarea {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+.dark input:focus, 
+.dark select:focus, 
+.dark textarea:focus {
+  border-color: #3b82f6 !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
+}
+
+.dark input:disabled, 
+.dark select:disabled, 
+.dark textarea:disabled {
+  background-color: #0f172a !important;
+  color: #64748b !important;
+  border-color: #334155 !important;
+}
+
+.dark input::placeholder {
+  color: #475569 !important;
+}
+
+/* Text Colors */
+.dark .text-slate-900, .dark .text-slate-800 {
+  color: #f8fafc !important;
+}
+
+.dark .text-slate-700, .dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-slate-400 {
+  color: #64748b !important;
+}
+
+.dark .text-institucional-700 {
+  color: #60a5fa !important;
+}
+
+.dark .text-institucional-800, .dark .text-institucional-900 {
+  color: #93c5fd !important;
+}
+
+.dark .text-institucional-600 {
+  color: #3b82f6 !important;
+}
+
+/* Colored semantic backgrounds and badges */
+.dark .bg-blue-50 {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+.dark .text-blue-600 {
+  color: #60a5fa !important;
+}
+.dark .text-blue-700 {
+  color: #93c5fd !important;
+}
+.dark .border-blue-200 {
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.dark .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+.dark .text-emerald-600 {
+  color: #34d399 !important;
+}
+.dark .text-emerald-700 {
+  color: #6ee7b7 !important;
+}
+.dark .border-emerald-200 {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+.dark .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+.dark .text-amber-600 {
+  color: #fbbf24 !important;
+}
+.dark .text-amber-700 {
+  color: #fde047 !important;
+}
+.dark .border-amber-200 {
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+.dark .bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+.dark .text-red-600 {
+  color: #f87171 !important;
+}
+.dark .text-red-700 {
+  color: #fca5a5 !important;
+}
+.dark .border-red-200 {
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+.dark .bg-red-100 {
+  background-color: rgba(239, 68, 68, 0.25) !important;
+}
+
+.dark .bg-purple-50 {
+  background-color: rgba(139, 92, 246, 0.15) !important;
+}
+.dark .text-purple-600 {
+  color: #c084fc !important;
+}
+.dark .text-purple-700 {
+  color: #d8b4fe !important;
+}
+
+.dark .bg-orange-50 {
+  background-color: rgba(249, 115, 22, 0.15) !important;
+}
+.dark .text-orange-600 {
+  color: #fb923c !important;
+}
+.dark .text-orange-700 {
+  color: #ffedd5 !important;
+}
+.dark .border-orange-200 {
+  border-color: rgba(249, 115, 22, 0.3) !important;
+}
+
+.dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Header & Modal specifics */
+.dark header.bg-white {
+  background-color: #1e293b !important;
+}
+
+.dark .glass {
+  background: rgba(30, 41, 59, 0.9) !important;
+}
+
+.dark .bg-slate-50.rounded-b-xl {
+  background-color: #0f172a !important;
+}
+
+/* Scrollbar dark theme */
+.dark ::-webkit-scrollbar-track {
+  background: #0f172a !important;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155 !important;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569 !important;
+}
+
