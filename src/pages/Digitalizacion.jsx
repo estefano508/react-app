@@ -1,6 +1,114 @@
+import { useRef, useState } from 'react';
 import { mockData } from '../data.js';
 
 export default function Digitalizacion({ navigate, addToast, ocrStatus, ocrProgress, handleUploadClick, selectedExpediente, selectedDocType, setSelectedExpediente, setSelectedDocType, isSaveEnabled, handleFileChange }) {
+  const uploadInputRef = useRef(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const [cameraDevices, setCameraDevices] = useState([]);
+  const [currentDeviceIndex, setCurrentDeviceIndex] = useState(0);
+
+  const stopStream = () => {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+  };
+
+  const getCameraDevices = async () => {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    return devices.filter((d) => d.kind === 'videoinput');
+  };
+
+  const startCamera = async (deviceId) => {
+    stopStream();
+    try {
+      const constraints = { audio: false };
+      if (deviceId) {
+        constraints.video = { deviceId: { exact: deviceId } };
+      } else {
+        constraints.video = { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } };
+      }
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+      setCameraOpen(true);
+      requestAnimationFrame(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      });
+      const devices = await getCameraDevices();
+      setCameraDevices(devices);
+      if (!deviceId && devices.length > 0) {
+        const rearIndex = devices.findIndex((d) => d.label.toLowerCase().includes('rear') || d.label.toLowerCase().includes('trasera') || d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('environment'));
+        const idx = rearIndex >= 0 ? rearIndex : 0;
+        setCurrentDeviceIndex(idx);
+        if (idx !== 0) {
+          stopStream();
+          const s = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: devices[idx].deviceId } }, audio: false });
+          streamRef.current = s;
+          requestAnimationFrame(() => {
+            if (videoRef.current) videoRef.current.srcObject = s;
+          });
+        }
+      }
+    } catch {
+      addToast('No se pudo acceder a la cámara. Verifique los permisos.', 'error');
+    }
+  };
+
+  const handleCameraClick = () => startCamera(null);
+
+  const toggleCamera = async () => {
+    const nextIndex = (currentDeviceIndex + 1) % cameraDevices.length;
+    setCurrentDeviceIndex(nextIndex);
+    stopStream();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: cameraDevices[nextIndex].deviceId } }, audio: false });
+      streamRef.current = stream;
+      requestAnimationFrame(() => {
+        if (videoRef.current) videoRef.current.srcObject = stream;
+      });
+    } catch {
+      addToast('No se pudo cambiar de cámara.', 'error');
+    }
+  };
+
+  const stopCamera = () => {
+    stopStream();
+    setCameraOpen(false);
+  };
+
+  const capturePhoto = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas) return;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const file = new File([blob], 'captura.jpg', { type: 'image/jpeg' });
+        handleFileChange({ target: { files: [file] } });
+        addToast('Foto capturada correctamente', 'exito');
+        stopCamera();
+      }
+    }, 'image/jpeg', 0.92);
+  };
+
+  const handleUploadClickLocal = () => {
+    uploadInputRef.current?.click();
+  };
+
+  const handleUploadCapture = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileChange({ target: { files: [file] } });
+      addToast('Archivo cargado correctamente', 'exito');
+    }
+    e.target.value = '';
+  };
+
   return (
     <div className="fade-in max-w-5xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
@@ -44,17 +152,17 @@ export default function Digitalizacion({ navigate, addToast, ocrStatus, ocrProgr
                 <i className="fas fa-scanner text-2xl text-slate-400 group-hover:text-institucional-600 mb-2 block"></i>
                 <span className="text-xs font-semibold text-slate-600 group-hover:text-institucional-700">Escáner</span>
               </button>
-              <button type="button" onClick={() => addToast('Accediendo a cámara del dispositivo...', 'info')} className="p-4 border-2 border-slate-200 hover:border-institucional-500 rounded-xl text-center transition-all group focus-ring bg-slate-50 hover:bg-blue-50">
+              <button type="button" onClick={handleCameraClick} className="p-4 border-2 border-slate-200 hover:border-institucional-500 rounded-xl text-center transition-all group focus-ring bg-slate-50 hover:bg-blue-50">
                 <i className="fas fa-mobile-alt text-2xl text-slate-400 group-hover:text-institucional-600 mb-2 block"></i>
                 <span className="text-xs font-semibold text-slate-600 group-hover:text-institucional-700">Cámara</span>
               </button>
-              <button type="button" onClick={handleUploadClick} className="p-4 border-2 border-slate-200 hover:border-institucional-500 rounded-xl text-center transition-all group focus-ring bg-slate-50 hover:bg-blue-50">
+              <button type="button" onClick={handleUploadClickLocal} className="p-4 border-2 border-slate-200 hover:border-institucional-500 rounded-xl text-center transition-all group focus-ring bg-slate-50 hover:bg-blue-50">
                 <i className="fas fa-cloud-upload-alt text-2xl text-slate-400 group-hover:text-institucional-600 mb-2 block"></i>
                 <span className="text-xs font-semibold text-slate-600 group-hover:text-institucional-700">Subir</span>
               </button>
             </div>
 
-            <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-institucional-400 hover:bg-blue-50/30 transition-all cursor-pointer relative overflow-hidden" onClick={handleUploadClick}>
+            <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-institucional-400 hover:bg-blue-50/30 transition-all cursor-pointer relative overflow-hidden" onClick={handleUploadClickLocal}>
               <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
                 <i className="fas fa-file-import text-9xl text-institucional-900"></i>
               </div>
@@ -165,9 +273,39 @@ export default function Digitalizacion({ navigate, addToast, ocrStatus, ocrProgr
                 </button>
               </div>
             </form>
+            </div>
+          </div>
+      </div>
+      <input ref={uploadInputRef} type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={handleUploadCapture} />
+
+      {cameraOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl overflow-hidden max-w-lg w-full shadow-2xl">
+            <div className="flex items-center justify-between p-4 border-b border-slate-200">
+              <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                <i className="fas fa-camera text-institucional-600"></i>
+                Capturar Documento
+              </h3>
+              <button onClick={stopCamera} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <i className="fas fa-times text-xl"></i>
+              </button>
+            </div>
+            <div className="relative bg-black">
+              <video ref={videoRef} autoPlay playsInline muted className="w-full" />
+              <canvas ref={canvasRef} className="hidden" />
+            </div>
+            <div className="p-4 flex justify-center items-center gap-6">
+              <button onClick={toggleCamera} className="w-12 h-12 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 transition-all flex items-center justify-center">
+                <i className="fas fa-sync-alt text-lg"></i>
+              </button>
+              <button onClick={capturePhoto} className="w-16 h-16 rounded-full bg-institucional-700 hover:bg-institucional-800 text-white shadow-lg transition-all hover:scale-105 flex items-center justify-center">
+                <i className="fas fa-camera text-2xl"></i>
+              </button>
+              <div className="w-12"></div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
