@@ -12,14 +12,14 @@ export default function WorkInfo({
                 label="Correo institucional"
                 required
                 error={errors.correo}
-                helper="Correo @gobierno.gob.mx"
+                helper="Correo @institución.gob.ec"
             >
                 <TextField
                     type="email"
                     value={values.correo}
                     onChange={(e) => updateField("correo", e.target.value)}
                     error={errors.correo}
-                    placeholder="usuario@gobierno.gob.mx"
+                    placeholder="usuario@institución.gob.ec"
                 />
             </CardField>
 

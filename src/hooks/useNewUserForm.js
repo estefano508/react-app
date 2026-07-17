@@ -79,6 +79,11 @@ export default function useNewUserForm() {
                 error = validateName(value);
                 break;
 
+            case "segundoNombre":
+            case "segundoApellido":
+                error = value.trim() ? validateName(value) : "";
+                break;
+
             case "cedula":
                 error = validateCedula(value);
                 break;

@@ -34,7 +34,10 @@ export default function TextField({
 
     const [focused, setFocused] = useState(false);
 
+    const isDateInput = type === "date";
     const isValid = value !== "" && error === "";
+    const statusIconPosition = isDateInput ? "right-10" : "right-4";
+    const inputPaddingClass = isDateInput ? "pr-16" : "pr-5";
 
     return (
 
@@ -152,7 +155,7 @@ export default function TextField({
 
                     onBlur={() => setFocused(false)}
 
-                    className="
+                    className={`
 
                         w-full
 
@@ -162,6 +165,8 @@ export default function TextField({
 
                         py-4
 
+                        ${inputPaddingClass}
+
                         outline-none
 
                         bg-transparent
@@ -170,7 +175,7 @@ export default function TextField({
 
                         placeholder:text-slate-400
 
-                    "
+                    `}
 
                 />
 
@@ -180,11 +185,11 @@ export default function TextField({
 
                         <div
 
-                            className="
+                            className={`
 
                             absolute
 
-                            right-4
+                            ${statusIconPosition}
 
                             top-1/2
 
@@ -192,7 +197,7 @@ export default function TextField({
 
                             text-green-600
 
-                            "
+                            `}
 
                             aria-hidden="true"
 
@@ -212,11 +217,11 @@ export default function TextField({
 
                         <div
 
-                            className="
+                            className={`
 
                             absolute
 
-                            right-4
+                            ${statusIconPosition}
 
                             top-1/2
 
@@ -224,7 +229,7 @@ export default function TextField({
 
                             text-red-600
 
-                            "
+                            `}
 
                             aria-hidden="true"
 

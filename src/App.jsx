@@ -198,6 +198,81 @@ function App() {
     addToast('Archivo cargado correctamente', 'exito');
   };
 
+  const openInfoModal = () => {
+    openModal('Información institucional', (
+      <div className="space-y-5 text-sm text-slate-700">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-institucional-100 text-institucional-700">
+              <i className="fas fa-building" />
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Empresa</p>
+              <h4 className="font-semibold text-slate-800">Archivo Digital Institucional</h4>
+            </div>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            <div className="rounded-lg border border-slate-200 bg-white p-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Dirección de la sucursal</p>
+              <p className="mt-1 font-medium text-slate-700">Av. Amazonas N24-122 y Naciones Unidas, Quito</p>
+            </div>
+            <div className="rounded-lg border border-slate-200 bg-white p-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Horario de atención</p>
+              <p className="mt-1 font-medium text-slate-700">Lunes a viernes · 08:00 - 18:00</p>
+            </div>
+            <div className="rounded-lg border border-slate-200 bg-white p-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Teléfono</p>
+              <p className="mt-1 font-medium text-slate-700">+593 2 398 5000</p>
+            </div>
+            <div className="rounded-lg border border-slate-200 bg-white p-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Correo de contacto</p>
+              <p className="mt-1 font-medium text-slate-700">soporte@archivodigital.gob.ec</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+              <i className="fas fa-server" />
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Información del sistema</p>
+              <h4 className="font-semibold text-slate-800">Sistema de gestión documental</h4>
+            </div>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg border border-slate-200 p-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Versión</p>
+              <p className="mt-1 font-medium text-slate-700">2.4.1</p>
+            </div>
+            <div className="rounded-lg border border-slate-200 p-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Última actualización</p>
+              <p className="mt-1 font-medium text-slate-700">16/07/2026</p>
+            </div>
+            <div className="rounded-lg border border-slate-200 p-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Entorno</p>
+              <p className="mt-1 font-medium text-slate-700">Producción · Seguridad reforzada</p>
+            </div>
+            <div className="rounded-lg border border-slate-200 p-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Responsable</p>
+              <p className="mt-1 font-medium text-slate-700">Unidad de Gestión Documental</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-800">
+          <div className="flex items-start gap-3">
+            <i className="fas fa-info-circle mt-0.5" />
+            <p className="text-sm">
+              Este módulo permite consultar la información institucional y técnica del sistema para soporte, atención y trazabilidad documental.
+            </p>
+          </div>
+        </div>
+      </div>
+    ));
+  };
+
   const menuButtonClass = (itemKey) =>
     `nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-colors focus-ring text-left ${route === itemKey ? 'bg-white/20 border-l-4 border-acento-400' : ''}`;
 
@@ -396,6 +471,9 @@ function App() {
           <span className="font-semibold">Archivo Digital</span>
         </div>
         <div className="flex items-center gap-1">
+          <button onClick={openInfoModal} className="p-2 hover:bg-white/10 rounded-lg focus-ring" title="Información del sistema" aria-label="Abrir información del sistema">
+            <i className="fas fa-info-circle text-xl"></i>
+          </button>
           <button onClick={() => { setDarkMode((prev) => !prev); addToast(darkMode ? 'Modo claro activado' : 'Modo oscuro activado', 'info'); }} className="p-2 hover:bg-white/10 rounded-lg focus-ring" title="Modo oscuro">
             <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'} text-xl`}></i>
           </button>
@@ -456,6 +534,9 @@ function App() {
               <span className="font-medium text-slate-800">{currentBreadcrumb}</span>
             </div>
             <div className="flex items-center gap-4">
+              <button onClick={openInfoModal} className="p-2 text-slate-500 hover:text-institucional-700 hover:bg-slate-100 rounded-lg focus-ring" title="Información del sistema" aria-label="Abrir información del sistema">
+                <i className="fas fa-info-circle"></i>
+              </button>
               <button onClick={() => { setFontSizeLevel((prev) => (prev + 1) % 3); addToast(`Tamaño de texto: ${['Normal', 'Grande', 'Extra Grande'][ (fontSizeLevel + 1) % 3 ]}`, 'info'); }} className="p-2 text-slate-500 hover:text-institucional-700 hover:bg-slate-100 rounded-lg focus-ring" title="Ajustar tamaño de texto">
                 <i className="fas fa-font"></i>
               </button>

@@ -38,8 +38,8 @@ export default function PersonalInfo({
             <CardField
 
                 label="Segundo nombre"
-
-                helper="Campo opcional"
+                helper="Campo opcional. Solo letras."
+                error={errors.segundoNombre}
 
             >
 
@@ -48,6 +48,7 @@ export default function PersonalInfo({
                     value={values.segundoNombre}
 
                     onChange={(e) => updateField("segundoNombre", e.target.value)}
+                    error={errors.segundoNombre}
 
                 />
 
@@ -76,6 +77,8 @@ export default function PersonalInfo({
             <CardField
 
                 label="Segundo apellido"
+                helper="Campo opcional. Solo letras."
+                error={errors.segundoApellido}
 
             >
 
@@ -84,6 +87,7 @@ export default function PersonalInfo({
                     value={values.segundoApellido}
 
                     onChange={(e) => updateField("segundoApellido", e.target.value)}
+                    error={errors.segundoApellido}
 
                 />
 

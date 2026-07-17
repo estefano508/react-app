@@ -46,6 +46,42 @@ export default function Dashboard({ navigate, addToast }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="space-y-6 order-first lg:order-none">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+            <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <i className="fas fa-bolt text-acento-500"></i>
+              Accesos Rápidos
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { icon: 'fa-camera', label: 'Digitalizar', route: 'digitalizacion' },
+                { icon: 'fa-search', label: 'Buscar', route: 'busqueda' },
+                { icon: 'fa-check-double', label: 'Validar', route: 'validacion' },
+                { icon: 'fa-folder-plus', label: 'Expedientes', route: 'expedientes' }
+              ].map((item) => (
+                <button key={item.route} onClick={() => navigate(item.route)} className="p-4 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg text-center transition-all group focus-ring">
+                  <i className={`fas ${item.icon} text-2xl text-slate-400 group-hover:text-blue-500 mb-2 block`}></i>
+                  <span className="text-xs font-medium text-slate-600 group-hover:text-blue-700">{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+            <h3 className="font-bold text-slate-800 mb-4 text-sm">Digitalización Semanal</h3>
+            <div className="flex items-end justify-between h-32 gap-2">
+              {[45, 62, 38, 75, 55, 80, 48].map((value, index) => (
+                <div key={index} className="flex-1 flex flex-col items-center gap-1 group">
+                  <div className="w-full bg-institucional-100 rounded-t relative overflow-hidden" style={{ height: `${value}%` }}>
+                    <div className="absolute bottom-0 left-0 right-0 bg-institucional-600 rounded-t transition-all group-hover:bg-institucional-500" style={{ height: '100%' }} />
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-medium">{['L', 'M', 'M', 'J', 'V', 'S', 'D'][index]}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
           <div className="p-5 border-b border-slate-100 flex items-center justify-between">
             <h3 className="font-bold text-slate-800 flex items-center gap-2">
@@ -106,41 +142,6 @@ export default function Dashboard({ navigate, addToast }) {
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-            <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <i className="fas fa-bolt text-acento-500"></i>
-              Accesos Rápidos
-            </h3>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { icon: 'fa-camera', label: 'Digitalizar', route: 'digitalizacion' },
-                { icon: 'fa-search', label: 'Buscar', route: 'busqueda' },
-                { icon: 'fa-check-double', label: 'Validar', route: 'validacion' },
-                { icon: 'fa-folder-plus', label: 'Expedientes', route: 'expedientes' }
-              ].map((item) => (
-                <button key={item.route} onClick={() => navigate(item.route)} className="p-4 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg text-center transition-all group focus-ring">
-                  <i className={`fas ${item.icon} text-2xl text-slate-400 group-hover:text-blue-500 mb-2 block`}></i>
-                  <span className="text-xs font-medium text-slate-600 group-hover:text-blue-700">{item.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-            <h3 className="font-bold text-slate-800 mb-4 text-sm">Digitalización Semanal</h3>
-            <div className="flex items-end justify-between h-32 gap-2">
-              {[45, 62, 38, 75, 55, 80, 48].map((value, index) => (
-                <div key={index} className="flex-1 flex flex-col items-center gap-1 group">
-                  <div className="w-full bg-institucional-100 rounded-t relative overflow-hidden" style={{ height: `${value}%` }}>
-                    <div className="absolute bottom-0 left-0 right-0 bg-institucional-600 rounded-t transition-all group-hover:bg-institucional-500" style={{ height: '100%' }} />
-                  </div>
-                  <span className="text-[10px] text-slate-500 font-medium">{['L', 'M', 'M', 'J', 'V', 'S', 'D'][index]}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
